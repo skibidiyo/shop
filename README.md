@@ -1,4 +1,4 @@
-# Shop Project
+## Assignment 2
 
 ## Explain how you implemented the checklist above step-by-step (not just following the tutorial).
 - Make sure Python and Django is already installed
@@ -147,6 +147,7 @@ Django is an excellent starting point for learning software development because 
 ## Why is the Django model called an ORM?
 Django's model is called an ORM because it allows developers to work with relational databases using object-oriented programming techniques, hiding the complexities of SQL behind an easy-to-use Python API. This not only speeds up development but also makes database operations more secure, maintainable, and scalable. Django’s ORM abstracts the database layer so that developers can focus on writing business logic without worrying about the specifics of SQL syntax or database management.
 
+## Assignment 3
 
 ## Explain why we need data delivery in implementing a platform.
 Data delivery ensures that information moves smoothly and securely between parts of a platform. It helps everything work together, provides fast responses, handles more users without slowing down, keeps data safe, and makes the platform easy to use.

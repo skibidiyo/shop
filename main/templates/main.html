@@ -1,6 +1,38 @@
-<h1>SKIBI SHOP</h1>
+{% extends 'base.html' %}
+{% block content %}
+<h1>SKIBISHOP</h1>
 
-<h5>Name: </h5>
-<p>{{ name }}</p> <!-- Change according to your name -->
-<h5>Class: </h5>
-<p>{{ class }}</p> <!-- Change according to your class -->
+<h5>Name:</h5>
+<p>{{ name }}</p>
+
+<h5>Class:</h5>
+<p>{{ class }}</p>
+
+{% if not food_entries %}
+<p>There are no product in SKIBISHOP.</p>
+{% else %}
+<table>
+  <tr>
+    <th>Food Name</th>
+    <th>Description</th>
+    <th>Price</th>
+  </tr>
+
+  {% comment %} This is how to display food data
+  {% endcomment %} 
+  {% for food_entry in food_entries %}
+  <tr>
+    <td>{{food_entry.name}}</td>
+    <td>{{food_entry.description}}</td>
+    <td>{{food_entry.price}}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+<br />
+
+<a href="{% url 'main:create_food_entry' %}">
+  <button>Add New Food Entry</button>
+</a>
+{% endblock content %}

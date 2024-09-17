@@ -1,8 +1,8 @@
 from django.db import models
-
-
-class product(models.Model):
+import uuid
+class FoodEntry(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
-    mood_intensity = models.IntegerField()
     description = models.TextField()
+    price = models.IntegerField()
 

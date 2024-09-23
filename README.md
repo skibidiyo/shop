@@ -290,3 +290,248 @@ XML by id
 
 JSON by id
 ![alt text](image-4.png)
+
+
+## ASSIGNMENT 4
+
+ ## What is the difference between HttpResponseRedirect() and redirect()?
+HttpResponseRedirect() is a basic way to redirect in Django, where you manually provide the full URL. On the other hand, redirect() is a shortcut that simplifies the process by allowing you to pass a view name, model, or URL, and Django automatically resolves it for you. redirect() is more convenient for most cases, while HttpResponseRedirect() gives more control if needed.
+
+ ## Explain how the MoodEntry model is linked with User!
+ The FoodEntry model is linked to the User model through a ForeignKey relationship, meaning each food entry is associated with a specific user who creates or owns it. The ForeignKey(User, on_delete=models.CASCADE) field connects the FoodEntry to a user, so every entry belongs to a single user from the User table. If the user is deleted, all associated food entries will also be removed (on_delete=models.CASCADE). This relationship ensures that each food entry can be tracked to the user who added it.
+ 
+ ## What is the difference between authentication and authorization, and what happens when a user logs in? Explain how Django implements these two concepts.
+Authentication is the process of verifying who a user is, while authorization is about determining what the user is allowed to do. In simple terms, authentication checks if a user is who they claim to be (like entering a username and password to log in), and authorization checks what permissions or access that user has once logged in (like whether they can view or edit certain pages).
+
+When a user logs in, Django first performs authentication by checking the credentials (username and password) against the database. If the credentials are correct, Django creates a session for the user, which keeps them logged in.
+
+After the user is authenticated, Django handles authorization by using permissions and groups. These determine what actions the user is allowed to perform, like accessing certain views or modifying data. Django's built-in User model and the auth system manage both authentication and authorization, making it easy to restrict or grant access to parts of your app based on the user's permissions.
+
+ ## How does Django remember logged-in users? Explain other uses of cookies and whether all cookies are safe to use.
+ Django remembers logged-in users by using session cookies, which store a unique session ID in the browser. Cookies can also be used for things like saving preferences or tracking activity. However, not all cookies are safe, some can be misused for tracking or be intercepted if not secured properly. Using secure connections and adding security flags helps protect cookies.
+
+ ## Explain how did you implement the checklist step-by-step (apart from following the tutorial).
+ - First, activate env in the terminal
+ - Open views.py in the main subdirectory and add these imports:
+    ```
+    from django.contrib.auth.forms import UserCreationForm
+    from django.contrib import messages
+    ```
+- Add the following register function to views.py
+    ```
+    def register(request):
+        form = UserCreationForm()
+
+        if request.method == "POST":
+            form = UserCreationForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your account has been successfully created!')
+                return redirect('main:login')
+        context = {'form':form}
+        return render(request, 'register.html', context)
+    ```
+
+- Create a new html file named register.html in the main/templates directory and add the following code
+    ```
+    {% extends 'base.html' %} {% block meta %}
+    <title>Register</title>
+    {% endblock meta %} {% block content %}
+
+    <div class="login">
+    <h1>Register</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td><input type="submit" name="submit" value="Register" /></td>
+        </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    </div>
+
+    {% endblock content %}
+    ```
+- Open urls.py in the main subdirectory and import the register function., then add a URL path to urlpatterns to access the imported function.
+    ```
+    path('register/', register, name='register'),
+    ```
+-  Reopen views.py in the main subdirectory and add the imports authenticate, login and AuthenticationForm
+    ```
+    from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+    from django.contrib.auth import authenticate, login
+    ```
+-  Add the login_user function below into views.py
+    ```
+    def login_user(request):
+        if request.method == 'POST':
+            form = AuthenticationForm(data=request.POST)
+
+            if form.is_valid():
+                    user = form.get_user()
+                    login(request, user)
+                    return redirect('main:show_main')
+
+        else:
+            form = AuthenticationForm(request)
+        context = {'form': form}
+        return render(request, 'login.html', context)
+    ```
+
+- Create a new HTML file named login.html in the main/templates directory. Fill it with the following template:
+    ```
+    {% extends 'base.html' %}
+
+    {% block meta %}
+    <title>Login</title>
+    {% endblock meta %}
+
+    {% block content %}
+    <div class="login">
+    <h1>Login</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <table>
+        {{ form.as_table }}
+        <tr>
+            <td></td>
+            <td><input class="btn login_btn" type="submit" value="Login" /></td>
+        </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} Don't have an account yet?
+    <a href="{% url 'main:register' %}">Register Now</a>
+    </div>
+
+    {% endblock content %}
+
+- Open urls.py in the main subdirectory and import the function you just created and add the URL path to urlpatterns to access the function.
+    ```
+    from main.views import login_user
+
+
+    urlpatterns = [
+   ...
+   path('login/', login_user, name='login'),
+    ]
+    ```
+- Reopen views.py in the main subdirectory and add the following logout import at the top and add the following function to views.py
+    ```
+    from django.contrib.auth import logout
+
+    def logout_user(request):
+        logout(request)
+        return redirect('main:login')
+
+    ```
+
+- Open main.html file in the main/templates directory and add the following code snippet 
+    ```
+    <a href="{% url 'main:logout' %}">
+        <button>Logout</button>
+    </a>
+    ```
+
+- Open urls.py in the main subdirectory and import the logout_user function, add the URL path to the url patterns
+    ```
+    from main.views import logout_user
+
+
+    urlpatterns = [
+        ...
+        path('logout/', logout_user, name='logout'),
+    ]
+- Reopen views.py in the main subdirectory and add the login_required import
+    ```
+    from django.contrib.auth.decorators import login_required
+    ```
+- Add the following code snippet above the show_main function
+    ```
+    ...
+    @login_required(login_url='/login')
+    def show_main(request):
+    ...
+    ```
+- Reopen views.py in the main subdirectory. Add the imports for HttpResponseRedirect, reverse, and datetime at the very top.
+    ```
+    import datetime
+    from django.http import HttpResponseRedirect
+    from django.urls import reverse
+    ```
+- Add the functionality to set a cookie named last_login to track when the user last logged in in the login_use function
+    ```
+    if form.is_valid():
+        user = form.get_user()
+        login(request, user)
+        response = HttpResponseRedirect(reverse("main:show_main"))
+        response.set_cookie('last_login', str(datetime.datetime.now()))
+        return response
+    ```
+
+- In the show_main function, add the snippet 'last_login': request.COOKIES['last_login'] to the context variable
+    ```
+    context = {
+        'name': 'Pak Bepe',
+        'class': 'PBP D',
+        'npm': '2306123456',
+        'mood_entries': mood_entries,
+        'last_login': request.COOKIES['last_login'],
+    }
+    ```
+- Modify the logout_user function
+    ```
+    def logout_user(request):
+        logout(request)
+        response = HttpResponseRedirect(reverse('main:login'))
+        response.delete_cookie('last_login')
+        return response
+    ```
+
+- Open the main.html file and add the following snippet after the logout button to display the last login data.
+    ```
+    <h5>Last login session: {{ last_login }}</h5>
+    ```
+
+- Open models.py in the main subdirectory, add the following import and add the following code in the previously created FoodEntry model
+    ```
+    from django.contrib.auth.models import User
+
+    class FoodEntry(models.Model):
+        user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    ```
+
+- Reopen views.py in the main subdirectory and modify the code in the create_food_entry function
+
+    ```
+    def create_food_entry(request):
+        form = FoodEntryForm(request.POST or None)
+
+        if form.is_valid() and request.method == "POST":
+            food_entry = form.save(commit=False)
+            food_entry.user = request.user
+            food_entry.save()
+            return redirect('main:show_main')
+
+        context = {'form': form}
+        return render(request, "create_food_entry.html", context)
+    ```

@@ -3,6 +3,8 @@ from main.views import show_main, create_food_entry, show_xml, show_json, show_x
 from main.views import register
 from main.views import login_user
 from main.views import logout_user
+from main.views import edit_food
+from main.views import delete_food
 
 app_name = 'main'
 
@@ -17,6 +19,8 @@ urlpatterns = [
     path('register/', register, name='register'),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
+    path('edit-food/<uuid:id>', edit_food, name='edit_food'),
+    path('delete/<uuid:id>', delete_food, name='delete_food'),
 
 
 ]   

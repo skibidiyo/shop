@@ -1115,7 +1115,7 @@ Use Cases:
             <div class="overflow-x-hidden px-4 md:px-8 pb-8 pt-24 min-h-screen bg-pink-100 flex flex-col"
             style="background-image: url('{% static 'image/background3.jpg' %}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
             <div class="container mx-auto px-4 py-8 mt-16 max-w-xl">
-                <h1 class="text-3xl font-bold text-center mb-8 text-black">Create Food Entry</h1>
+                <h1 class="text-3xl font-bold text-center mb-8 text-white">Create Food Entry</h1>
             
                 <div class="bg-white shadow-md rounded-lg p-6 form-style">
                 <form method="POST" class="space-y-6">

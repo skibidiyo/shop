@@ -1051,7 +1051,7 @@ Use Cases:
             </div>
             ```
 
-    - We need to display if the food_entry is still empty. Choose a sad photo or icon and name it very-sad.png. Add the very-sad.png photo to the static/image directory in the project root.
+    - We need to display if the food_entry is still empty. Choose a sad photo or icon and name it very-sad2.png. Add the very-sad2.png photo to the static/image directory in the project root.
         - In the main/templates directory, modify main.html like this:
             ```
             {% extends 'base.html' %}

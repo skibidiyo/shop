@@ -1,4 +1,5 @@
-## Assignment 2
+<details>
+<Summary><b>ASSIGNMENT 2</b></summary>
 
 ## Explain how you implemented the checklist above step-by-step (not just following the tutorial).
 - Make sure Python and Django is already installed
@@ -146,8 +147,10 @@ Django is an excellent starting point for learning software development because 
 
 ## Why is the Django model called an ORM?
 Django's model is called an ORM because it allows developers to work with relational databases using object-oriented programming techniques, hiding the complexities of SQL behind an easy-to-use Python API. This not only speeds up development but also makes database operations more secure, maintainable, and scalable. Django’s ORM abstracts the database layer so that developers can focus on writing business logic without worrying about the specifics of SQL syntax or database management.
+</details>
 
-## Assignment 3
+<details>
+<Summary><b>ASSIGNMENT 3</b></summary>
 
 ## Explain why we need data delivery in implementing a platform.
 Data delivery ensures that information moves smoothly and securely between parts of a platform. It helps everything work together, provides fast responses, handles more users without slowing down, keeps data safe, and makes the platform easy to use.
@@ -291,8 +294,10 @@ XML by id
 JSON by id
 ![alt text](image-4.png)
 
+</details>
 
-## ASSIGNMENT 4
+<details>
+<Summary><b>ASSIGNMENT 4</b></summary>
 
  ## What is the difference between HttpResponseRedirect() and redirect()?
 HttpResponseRedirect() is a basic way to redirect in Django, where you manually provide the full URL. On the other hand, redirect() is a shortcut that simplifies the process by allowing you to pass a view name, model, or URL, and Django automatically resolves it for you. redirect() is more convenient for most cases, while HttpResponseRedirect() gives more control if needed.
@@ -493,7 +498,7 @@ After the user is authenticated, Django handles authorization by using permissio
         'name': 'Pak Bepe',
         'class': 'PBP D',
         'npm': '2306123456',
-        'mood_entries': mood_entries,
+        'food_entries': ood_entries,
         'last_login': request.COOKIES['last_login'],
     }
     ```
@@ -536,7 +541,7 @@ After the user is authenticated, Django handles authorization by using permissio
         return render(request, "create_food_entry.html", context)
     ```
 
-- Change the value of mood_entries and context in the function show_main
+- Change the value of food_entries and context in the function show_main
     ```
     def show_main(request):
         food_entries = FoodEntry.objects.filter(user=request.user)
@@ -563,9 +568,11 @@ After the user is authenticated, Django handles authorization by using permissio
     ```
     python manage.py runserver
     ```
+</details>
 
+<details>
+<Summary><b>ASSIGNMENT 5</b></summary>
 
-## Assignment 5
 ##  If there are multiple CSS selectors for an HTML element, explain the priority order of these CSS selectors!
 When multiple CSS selectors are applied to the same HTML element, CSS decides which style to apply using something called specificity. Here’s how CSS prioritizes selectors:
 1. Inline Styles: These are styles written directly in the HTML element using the style attribute. Inline styles always win because they are the most specific.
@@ -671,7 +678,7 @@ Use Cases:
 
         {% block content %}
 
-        <h1>Edit Mood</h1>
+        <h1>Edit Food</h1>
 
         <form method="POST">
             {% csrf_token %}
@@ -680,7 +687,7 @@ Use Cases:
                 <tr>
                     <td></td>
                     <td>
-                        <input type="submit" value="Edit Mood"/>
+                        <input type="submit" value="Edit Food"/>
                     </td>
                 </tr>
             </table>
@@ -709,14 +716,14 @@ Use Cases:
             <tr>
                 ...
                 <td>
-                    <a href="{% url 'main:edit_mood' mood_entry.pk %}">
+                    <a href="{% url 'main:edit_food' food_entry.pk %}">
                         <button>
                             Edit
                         </button>
                     </a>
                 </td>
                 <td>
-                    <a href="{% url 'main:delete_mood' mood_entry.pk %}">
+                    <a href="{% url 'main:delete_food' food_entry.pk %}">
                         <button>
                             Delete
                         </button>
@@ -1194,4 +1201,325 @@ Use Cases:
             </div>
             </div>
             {% endblock %}
+            ```
+</details>
+
+<details>
+<Summary><b>ASSIGNMENT 6</b></summary>
+
+## Explain the benefits of using JavaScript in developing web applications!
+
+JavaScript is essential for developing web applications because it allows websites to be interactive and dynamic, enabling features like clickable buttons, real-time updates, and animations. It runs directly in the web browser, so users don't need to install anything extra, making it widely accessible. With JavaScript, developers can update parts of a website instantly without refreshing the entire page, which enhances user experience. It also has a vast ecosystem of tools and frameworks, and can be used for both front-end and back-end development, making it a versatile choice for building modern web apps.
+
+## Explain why we need to use await when we call fetch()! What would happen if we don't use await?
+
+When calling fetch() in JavaScript, it returns a promise because the process of fetching data from a server is asynchronous—it doesn't complete immediately. By using await, we ensure that the execution of the code pauses until the promise resolves and the data is fully retrieved. Without await, the code would continue running without waiting for the response, leading to potential issues like trying to access data that hasn't been fetched yet, resulting in errors or undefined behavior. Essentially, await synchronizes asynchronous operations, ensuring data is available before proceeding.
+
+## Why do we need to use the csrf_exempt decorator on the view used for AJAX POST?
+
+
+The csrf_exempt decorator in Django is used to bypass the CSRF (Cross-Site Request Forgery) protection for specific views, which is crucial for handling AJAX POST requests. By default, Django protects all POST requests from CSRF attacks, requiring a valid CSRF token to be included. However, AJAX requests may not always include this token, leading to server rejections. Using csrf_exempt allows these requests to be processed without triggering CSRF verification errors, making it useful when the CSRF token cannot be easily included or when handling CSRF protection differently. Nonetheless, this should be done with caution, as it removes an important layer of security from the view.
+
+## On this week's tutorial, the user input sanitization is done in the back-end as well. Why can't the sanitization be done just in the front-end?
+
+Sanitizing user input only on the front-end is not enough because it can be easily bypassed by users who disable JavaScript or change the code in their browsers. This means that someone could send harmful data directly to the server, which could lead to security problems like stealing information or damaging the database. By also sanitizing on the back-end, you ensure that all incoming data is properly checked and cleaned before it gets processed, providing a stronger layer of security for your application. This two-step approach helps keep your application safe from various attacks.
+
+## Explain how you implemented the checklist above step-by-step (not just following the tutorial)!
+
+- Adding Error Message to Login
+    - In the main directory(views.py), provide a conditional to the login_user view in your application as such
+        ```
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            response = HttpResponseRedirect(reverse("main:show_main"))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
+        else:
+            messages.error(request, "Invalid username or password. Please try again.")
+        ```
+- Creating Function to Add a Food with AJAX
+    - Add the following two imports to the views.py file.
+        ```
+        from django.views.decorators.csrf import csrf_exempt
+        from django.views.decorators.http import require_POST
+        ```
+    - Create a new function in the views.py file with the name add_food_entry_ajax that receives the request parameter as follows.
+        ```
+        @csrf_exempt
+        @require_POST
+        def add_food_entry_ajax(request):
+            name = strip_tags(request.POST.get("name")) # strip HTML tags!
+            description = strip_tags(request.POST.get("description")) # strip HTML tags!
+            price = request.POST.get("price")
+            user = request.user
+
+            new_food = FoodEntry(
+                name=name, description=description,
+                price = price,
+                user=user
+            )
+            new_food.save()
+
+            return HttpResponse(b"CREATED", status=201)
+        ```
+- Add Routing for add_food_entry_ajax
+    - Open urls.py on the main subdirectory and import the function you just created
+        ```
+        from main.views import ..., add_food_entry_ajax
+        ```
+    - Add the URL path inside of urlpatterns
+        ```
+        urlpatterns = [
+        ...
+        path('create-food-entry-ajax', add_food_entry_ajax, name='add_food_entry_ajax'),
+        ]
+        ```
+- Displaying Food Entry Data with fetch() API
+    - Open the views.py file and remove the two lines below.
+        ```
+        food_entries = FoodEntry.objects.filter(user=request.user)
+        'food_entries': food_entries,
+        ```
+    - Change the first line of the show_json and show_xml functions as follows
+        ```
+        data = FoodEntry.objects.filter(user=request.user)
+        ```
+    - Open the main.html file and remove the food_entries block conditional to display the card_food when empty.
+    - After removing the code snippet above, add this code snippet on the same place.
+        ```
+        <div id="food_entry_cards"></div>
+        ```
+    - Create a script block below the file (before {% endblock content %}) and create a new function in the script block with the name getFoodEntries.
+        ```
+        <script>
+        async function getFoodEntries(){
+            return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+        }
+        </script>
+        ```
+    - Create a new function on the script block with the name refreshFoodEntries that is used to refresh food data asynchronously.
+        ```
+        async function refreshFoodEntries() {
+        document.getElementById("food_entry_cards").innerHTML = "";
+        document.getElementById("food_entry_cards").className = "";
+        const foodEntries = await getFoodEntries();
+        let htmlString = "";
+        let classNameString = "";
+
+        if (foodEntries.length === 0) {
+            classNameString = "flex flex-col items-center justify-center min-h-[24rem] p-6";
+            htmlString = `
+                <div class="flex flex-col items-center justify-center min-h-[24rem] p-6">
+                    <img src="{% static 'image/very-sad2.png' %}" alt="Sad face" class="w-32 h-32 mb-4"/>
+                    <p class="text-center text-gray-600 mt-4">No food data in skibishop yet.</p>
+                </div>
+            `;
+        }
+        else {
+            classNameString = "columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6 w-full"
+            foodEntries.forEach((item) => {
+                const name = DOMPurify.sanitize(item.fields.name);
+                const description = DOMPurify.sanitize(item.fields.description);
+                htmlString += `
+                <div class="relative break-inside-avoid">
+                    <div class="absolute top-2 z-10 left-1/2 -translate-x-1/2 flex items-center -space-x-2">
+                        <div class="w-[3rem] h-8 bg-neutral-300 rounded-md opacity-80 -rotate-90"></div>
+                        <div class="w-[3rem] h-8 bg-neutral-300 rounded-md opacity-80 -rotate-90"></div>
+                    </div>
+                    <div class="relative top-5 bg-stone-400 shadow-md rounded-lg mb-6 break-inside-avoid flex flex-col border-2 border-stone-400 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                        <div class="bg-stone-400 text-gray-800 p-4 rounded-t-lg border-b-2 border-gray-800">
+                            <h3 class="font-bold text-xl mb-2">${item.fields.name}</h3>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-gray-700 mb-2">
+                                <span class="bg-[linear-gradient(to bottom,transparent 0%,transparent calc(100% - 1px),#CDC1FF calc(100% - 1px))] bg-[length:100% 1.5rem] pb-1 no-underline">${item.fields.description}</span>
+                            </p>
+                            <div class="mt-4"
+                                <p class="text-gray-600" style="font-family: 'Fredoka', sans-serif;">Rp ${ item.fields.price }</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute top-0 -right-4 flex space-x-1">
+                        <a href="/edit-food/${item.pk}" class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                            </svg>
+                        </a>
+                        <a href="/delete/${item.pk}" class="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition duration-300 shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                `;
+            });
+        }
+        document.getElementById("food_entry_cards").className = classNameString;
+        document.getElementById("food_entry_cards").innerHTML = htmlString;
+        } 
+        refreshFoodEntries();
+        ```
+- Creating Modal as a Form to Add a Food
+    - Add the following code to implement the modal (Tailwind) on your application.
+        ```
+            <div id="crudModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 w-full flex items-center justify-center bg-gray-800 bg-opacity-50 overflow-x-hidden overflow-y-auto transition-opacity duration-300 ease-out">
+        <div id="crudModalContent" class="relative bg-white rounded-lg shadow-lg w-5/6 sm:w-3/4 md:w-1/2 lg:w-1/3 mx-4 sm:mx-0 transform scale-95 opacity-0 transition-transform transition-opacity duration-300 ease-out">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 border-b rounded-t">
+            <h3 class="text-xl font-semibold text-gray-900">
+                Add New Food Entry
+            </h3>
+            <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" id="closeModalBtn">
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            </div>
+            <!-- Modal body -->
+            <div class="px-6 py-4 space-y-6 form-style">
+            <form id="foodEntryForm">
+                <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" placeholder="Enter food name" required>
+                </div> 
+                <div class="mb-4">
+                <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+                <input type="number" id="price" name="price" min="1" max="10" class="mt-1 block w-full border border-gray-300 rounded-md p-2 hover:border-indigo-700" placeholder="Add food price" required>
+                </div>
+                <div class="mb-4">
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea id="description" name="description" rows="3" class="mt-1 block w-full h-52 resize-none border border-gray-300 rounded-md p-2 hover:border-indigo-700" placeholder="Add food description" required></textarea>
+                </div>
+                
+            </form>
+            </div>
+            <!-- Modal footer -->
+            <div class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-2 p-6 border-t border-gray-200 rounded-b justify-center md:justify-end">
+            <button type="button" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" id="cancelButton">Cancel</button>
+            <button type="submit" id="submitFoodEntry" form="foodEntryForm" class="bg-slate-800 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded-lg">Save</button>
+            </div>
+        </div>
+        </div>
+        ```
+    - Because we are using vanilla Tailwind CSS, there is no built-in modal class. Therefore, to make the modal work, we need to add the following JavaScript functions.
+        ```
+        const modal = document.getElementById('crudModal');
+        const modalContent = document.getElementById('crudModalContent');
+
+        function showModal() {
+            const modal = document.getElementById('crudModal');
+            const modalContent = document.getElementById('crudModalContent');
+
+            modal.classList.remove('hidden'); 
+            setTimeout(() => {
+                modalContent.classList.remove('opacity-0', 'scale-95');
+                modalContent.classList.add('opacity-100', 'scale-100');
+            }, 50); 
+        }
+
+        function hideModal() {
+            const modal = document.getElementById('crudModal');
+            const modalContent = document.getElementById('crudModalContent');
+
+            modalContent.classList.remove('opacity-100', 'scale-100');
+            modalContent.classList.add('opacity-0', 'scale-95');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 150); 
+        }
+
+        document.getElementById("cancelButton").addEventListener("click", hideModal);
+        document.getElementById("closeModalBtn").addEventListener("click", hideModal);
+        ```
+    - Change the Add New Food Entry button that you have added in the tutorial above and add a new button to perform the addition of data with AJAX
+        ```
+         <a href="{% url 'main:create_food_entry' %}" class="bg-indigo-400 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 mx-4 ">
+            Add New Food Entry
+        </a>
+        <button data-modal-target="crudModal" data-modal-toggle="crudModal" class="btn bg-indigo-400 hover:bg-indigo-800 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105" onclick="showModal();">
+          Add New Food Entry by AJAX
+        </button>
+        ```
+- Adding Food Data with AJAX
+    - Create a new function in the block script with the name addFoodEntry
+        ```
+        function addFoodEntry() {
+            fetch("{% url 'main:add_food_entry_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#foodEntryForm')),
+            })
+            .then(response => refreshFoodEntries())
+
+            document.getElementById("foodEntryForm").reset(); 
+            document.querySelector("[data-modal-toggle='crudModal']").click();
+
+            return false;
+        }
+        document.getElementById("submitFoodEntry").onclick = addFoodEntry
+
+        ```
+    - Add an event listener to the form in the modal to run the addFoodEntry() function
+        ```
+        document.getElementById("foodEntryForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            addFoodEntry();
+        })
+        ```
+- Protecting the Application from Cross Site Scripting (XSS)
+    - Adding strip_tags to "Clean Up" New Data
+        - Open the views.py and forms.py files and add the following imports
+            ```
+            from django.utils.html import strip_tags
+            ```
+        - In the add_food_entry_ajax function in the views.py file, use the strip_tags function on the food and description data before the data is inserted into the FoodEntry.
+            ```
+            @csrf_exempt
+            @require_POST
+            def add_food_entry_ajax(request):
+                name = strip_tags(request.POST.get("name")) # strip HTML tags!
+                description = strip_tags(request.POST.get("description")) # strip HTML tags!
+            ```
+        - On the FoodEntryForm class in the forms.py file, add the following two methods.
+            ```
+            class FoodEntryForm(ModelForm):
+                class Meta:
+                    model = FoodEntry
+                    fields = ["name", "price", "description",]
+
+                def clean_name(self):
+                    name = self.cleaned_data["name"]
+                    return strip_tags(name)
+
+                def clean_description(self):
+                    description = self.cleaned_data["description"]
+                    return strip_tags(description)
+            ```
+    - Sanitizing Data with DOMPurify
+        - Open the main.html file and add the following code to the meta block
+            ```
+            {% block meta %}
+            ...
+            <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.7/dist/purify.min.js"></script>
+            ...
+            {% endblock meta %}
+            ```
+        - After that, add the following code to the refreshFoodEntries function that you have added previously
+            ```
+            <script>
+                ...
+                async function refreshFoodEntries() {
+                    ...
+                    FoodEntries.forEach((item) => {
+                        const name = DOMPurify.sanitize(item.fields.name);
+                        const description = DOMPurify.sanitize(item.fields.description);
+                        ...
+                    });
+                    ...
+                }
+                ...
+</script>
             ```

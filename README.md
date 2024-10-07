@@ -1521,5 +1521,5 @@ Sanitizing user input only on the front-end is not enough because it can be easi
                     ...
                 }
                 ...
-</script>
+            </script>
             ```

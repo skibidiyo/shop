@@ -5,6 +5,7 @@ from main.views import login_user
 from main.views import logout_user
 from main.views import edit_food
 from main.views import delete_food
+from main.views import create_food_flutter
 
 app_name = 'main'
 
@@ -22,5 +23,6 @@ urlpatterns = [
     path('edit-food/<uuid:id>', edit_food, name='edit_food'),
     path('delete/<uuid:id>', delete_food, name='delete_food'),
     path('create-food-entry-ajax', add_food_entry_ajax, name='add_food_entry_ajax'),
+    path('create-flutter/', create_food_flutter, name='create_food_flutter'),
 
 ]   
